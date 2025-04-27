@@ -1,0 +1,14 @@
+\section{Runtime verification of typestates}\label{typestates}
+
+The concept of typestate \cite{StromYemini86} has been introduced as a refinement of the classical notion of type to specify valid sequences of operations on objects.
+
+Typestates can be considered the sequential counterpart of behavioral types, as global \cite{CarboneHY07} and session types \cite{Honda93}, used to specify and verify bidirectional communication protocols
+in concurrent programs. Indeed, the aim of typestates is the definition and checking of correct \emph{object protocols} \cite{BacchianiBGMR22}.
+
+The iterator design pattern in OOP offers a typical and intuitive example of object protocol. For instance, while in Java the generic type \lstinline{Iterator<T>} from package \lstinline|java.util| only defines the allowed operations on an iterator object, one may be interested in verifying that the following protocol is respected:
+\begin{enumerate}
+ \item method \lstinline|next()| can be safely called on an iterator \lstinline|it| only if the previous method called on \lstinline{it} was \lstinline|hasNext()|, with returned value true;
+ \item optionally, consecutive calls to method \lstinline|hasNext()| on the same object should be avoided.
+\end{enumerate}
+
+Two aspects concerning the requirements above should be   It is important

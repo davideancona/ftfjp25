@@ -1,0 +1,54 @@
+\documentclass[]{jot}
+% Use the documentclass option 'lineno' to view line numbers
+
+% Enter the JOT metadata in the following 
+
+\usepackage{multirow}
+\usepackage{listing}
+
+\lstset{language=Java}
+
+% Select the article type
+
+\articletype{regular} 
+
+    % {editorial} editorial 
+    % {regular} regular contribution
+    % {manual} manual
+    % {column} column
+
+\title{Toward behavioral assertions for runtime verification}
+
+\author[$\ast$]{Davide Ancona}
+
+\affil[$\ast$]{University of Genova, Italy}
+
+\keywords{assertions, runtime verification}
+
+%%\runningtitle{} % For use in the internal pages 
+
+%% For the footnote.
+%% Give the last name of the first author if only one author;
+% \runningauthor{FirstAuthorLastname}
+%% last names of both authors if there are two authors;
+% \runningauthor{FirstAuthorLastname and SecondAuthorLastname}
+%% last name of the first author followed by et al, if more than two authors.
+\runningauthor{D. Ancona, and A. Francalanza}
+
+\begin{abstract}
+  
+\end{abstract}
+
+\begin{document}
+\maketitle
+\urlstyle{rm}
+
+\input{intro}
+
+\input{typestates}
+
+\input{conclu}
+
+\bibliography{main}
+
+\end{document}
