@@ -1,0 +1,7 @@
+\section{Runtime verification of definition-site object protocols}\label{definition-site}
+
+\Cref{use-site} contains several examples of use-site object protocols.
+For instance, the specification in \cref{iterator} define how objects of type \lstinline|Iterator| should be correctly used.
+
+In contrast, a {definition-site} protocol for \lstinline{Iterator} provides the requirements for a correct implementation of iterators. These can be independent of the specific implementation of iterators; for instance, method \lstinline{hasNext()} must not change the state of the iterator. Or it can depend from the specific programming language; for instance, in Java, if \lstinline{it.hasNext()} returns false, then subsequent calls \lstinline|it.next()| are expected to throw \lstinline|NoSuchElementException|, while in JavaScript method \lstinline{next()} should not throw an exception. Finally, the protocol can depend on the specific type of iterator and involve more interfaces; for example, in iterators of \lstinline{List<E>} objects method \lstinline|next()| is expected to return elements in a specific order, while, in general, this is not required for iterators of \lstinline{Set<E>} objects.
+

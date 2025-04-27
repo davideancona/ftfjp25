@@ -1,0 +1,24 @@
+\section{Runtime verification of use-site object protocols}\label{use-site}
+
+The concept of typestate \cite{StromYemini86,GarciaTWA14} has been introduced as a refinement of the classical notion of type to specify and verify valid sequences of operations on objects.
+
+Typestates are behavioral types \cite{AnconaBB0CDGGGH16}, as global \cite{CarboneHY07} and session types \cite{Honda93}, with the difference that the former have been initially devised mainly in the context of sequential programming, while the latter have been introduced to specify and verify bidirectional communication protocols in concurrent programs. Indeed, the aim of typestates is the definition and checking of correct \emph{object protocols} \cite{BacchianiBGMR22}.
+
+\subsection{Object protocols for single interfaces}\label{iterator}
+The iterator design pattern in OOP offers a typical and intuitive example of object protocol which can be defined with a typestate. Indeed, while in Java the generic type \lstinline{Iterator<T>} of package \lstinline|java.util| only defines the allowed operations on an iterator object, one may be interested in verifying that the following protocol is respected when iterators are used:
+\begin{enumerate}
+ \item method \lstinline|it.next()| can be safely called only if a previous method has been called on \lstinline{it}, such method was \lstinline|hasNext()|, and its returned value was true;
+ \item optionally, consecutive calls to method \lstinline|hasNext()| on the same object should be avoided.
+\end{enumerate}
+
+An important aspect of the requirements above is that they define the \emph{use-site} protocol for iterators. Under this point of view, a definition  for such requirements, expressed in any suitable formalism, should be associated with the \lstinline|Iterator|\footnote{Hence, to all classes implementing it.} interface to refine it.
+
+To verify an object protocol several solutions have been proposed in literature.
+Most of the static approaches rely on typestates \cite{KouzapasDPG18,VoineaDG20,MotaGR21,BacchianiBGMR22}, with several limitations in presence of concurrency, inheritance and aliasing.
+
+In some programming languages the implementation and runtime verification of protocols are hardcoded in the implementation of the objects. For instance, this policy is adopted by Java, not only with iterators, but also with other objects like regular expression matchers in \lstinline|java.util.regex| or streams in \lstinline|java.util.stream|. In these cases, sequences of method calls not compliant with the use-site protocol throw \lstinline{IllegalStateException}.
+Although this approach provides cast-iron guarantees and simplifies testing and debugging, it also exhibits drawbacks: implementation of objects is more  complex and less efficient. Furthermore, checking of the protocol cannot be disabled, and the code for verifying it cannot be easily shared and reused.
+
+
+
+
