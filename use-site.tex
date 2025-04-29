@@ -16,9 +16,21 @@ An important aspect of the requirements above is that they define the \emph{use-
 To verify an object protocol several solutions have been proposed in literature.
 Most of the static approaches rely on typestates \cite{KouzapasDPG18,VoineaDG20,MotaGR21,BacchianiBGMR22}, with several limitations in presence of concurrency, inheritance and aliasing.
 
-In some programming languages the implementation and runtime verification of protocols are hardcoded in the implementation of the objects. For instance, this policy is adopted by Java, not only with iterators, but also with other objects like regular expression matchers in \lstinline|java.util.regex| or streams in \lstinline|java.util.stream|. In these cases, sequences of method calls not compliant with the use-site protocol throw \lstinline{IllegalStateException}.
+In some programming languages the implementation and runtime verification of protocols are hardcoded in the code of the objects. For instance, this policy is adopted in Java, not only with iterators, but also with other objects like regular expression matchers in \lstinline|java.util.regex| or streams in \lstinline|java.util.stream|. In these cases, sequences of method calls not compliant with the use-site protocol throw \lstinline{IllegalStateException}.
 Although this approach provides cast-iron guarantees and simplifies testing and debugging, it also exhibits drawbacks: implementation of objects is more  complex and less efficient. Furthermore, checking of the protocol cannot be disabled, and the code for verifying it cannot be easily shared and reused.
 
+Classical tools and frameworks for unit testing based on dynamic assertion checking \cite{LangrHT15,FardM17} are not suited for this aim, since they have been devised to test the correctness of classes and objects against the specification of the implemented interface(s), that is, to verify definition-site object protocols \cref{definition-site}. Unit testing is used to dynamically check that a sequence of calls to methods of an interface behaves as expected, but cannot verify whether some client code calls sequences of such methods in a correct way.
+
+The approach followed here is inspired by RV and is based on the following assumptions:
+\begin{itemize}
+ \item The tested code is automatically instrumented to generate the relevant events for assertion checking.
+
+       The following six types of events are typically needed: (1) method, constructor called or returned, (2) method, constructor entered or exited, (3) exception thrown by a method or constructor, (4) method or constructor exited with a thrown examples.
+
+       All events are equipped with the expected information, like the name of the method, the arguments, and the returned value. Though redundant in some cases, (1)+(2), and (3)+(4) allow tracing of callbacks and calls of library methods or constructors without any need to instrument the imported libraries.
+ \item A textual formalism to specify the object protocol associated with one or more interfaces. From the specification a monitor should be automatically generated to recognize the correct sequences of events. For the examples in this paper \rml is used, but any other formalism which is expressive enough would work as well.
+ \item An annotation mechanism for connecting the specifications with the code to be dynamically checked. Moreover, in statically typed languages that support interface declarations, specifications should be associated with the corresponding interfaces to limit dynamic checking to the pertinent objects (assuming that a nominal type discipline).
+\end{itemize}
 
 
 
