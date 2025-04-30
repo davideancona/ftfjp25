@@ -29,17 +29,32 @@ The approach followed here is inspired by RV and is based on the following assum
 
        All events are equipped with the expected information, like the name of the method, the arguments, and the returned value. Though redundant in some cases, (1)+(2), and (3)+(4) allow tracing of callbacks and calls of library methods or constructors without any need to instrument the imported libraries.
  \item A textual formalism to specify the object protocol associated with one or more interfaces. From the specification a monitor should be automatically generated to recognize the correct sequences of events. For the examples in this paper \rml is used, but any other formalism which is expressive enough would work as well.
- \item An annotation mechanism for connecting the specifications with the code to be dynamically checked. Moreover, in statically typed languages that support interface declarations, specifications should be associated with their corresponding interfaces to limit dynamic checking to the pertinent objects (assuming a nominal type discipline).
+ \item An annotation mechanism for associating the code under testing with the specifications of the corresponding protocols. Moreover, in statically typed languages with nominal types, specifications should be associated with the types (preferably interfaces) of the objects that have to be checked.
 \end{itemize}
 
 The specification for iterators can be provided in an \rml file:
 \begin{lstlisting}[basicstyle=\tt\footnotesize]
 // file "iterator.rml"      
-Main = {let id; newIter(id)(Iterator<id> | Main)};
-Iterator<id> = ((hasNext(id,true)+ next(id))* hasNext(id,false)+);   
-Optional = {let id; newIter(id)(NoRep<id> | Optional)};
-NoRep<id> = (hasNext(id) noHasNext(id))*; 
+Main={let id; newIter(id)(Iterator<id> | Main)};
+Iterator<id>=((hasNext(id,true)+ next(id))* hasNext(id,false)+);   
+Optional={let id; newIter(id)(NoRep<id> | Optional)};
+NoRep<id>=(hasNext(id) noHasNext(id))*; 
 \end{lstlisting}
 The specification \lstinline|Optional| adds a further check to avoid redundant calls to \lstinline|hasNext()|. Any call of shape \lstinline|id.hasNext()| must be followed by an event of different type: either a call to \lstinline|next()| on any object, or a call to \lstinline|hasNext()| to an object different from \lstinline|id|.
+
+A possible setting for testing the protocol inside the body of a method would be:
+\begin{lstlisting}[basicstyle=\tt\footnotesize]
+@CheckProtocol(fromFile="iterator.rml", 
+      name="Main", types=Iterator.class)
+@CheckProtocol(fromFile="iterator.rml", 
+      name="Optional", types=Iterator.class)
+public void m(){ // method under test
+      // uses iterators
+}
+\end{lstlisting}
+In the example, all calls of methods with targets of type \lstinline|Iterator| will be checked against the specifications defined by \lstinline|Main| and \lstinline|Optional| in file \lstinline|iterator.rml|.
+
+The body of \lstinline|m()| is instrumented to generate all relevant events, corresponding to method calls, which are sent to the monitors which are compiled from the specifications in \lstinline|iterator.rml|. Communication between the code under test and monitors
+can be implemented with sockets.
 
 
