@@ -32,7 +32,7 @@ The approach followed here is inspired by RV and is based on the following assum
  \item An annotation mechanism for connecting the specifications with the code to be dynamically checked. Moreover, in statically typed languages that support interface declarations, specifications should be associated with their corresponding interfaces to limit dynamic checking to the pertinent objects (assuming a nominal type discipline).
 \end{itemize}
 
-The specification for iterators can be provided in an \RML file:
+The specification for iterators can be provided in an \rml file:
 \begin{lstlisting}[basicstyle=\tt\footnotesize]
 // file "iterator.rml"      
 Main = {let id; newIter(id)(Iterator<id> | Main)};
@@ -40,6 +40,6 @@ Iterator<id> = ((hasNext(id,true)+ next(id))* hasNext(id,false)+);
 Optional = {let id; newIter(id)(NoRep<id> | Optional)};
 NoRep<id> = (hasNext(id) noHasNext(id))*; 
 \end{lstlisting}
-The specification \lstinline|Optional|
+The specification \lstinline|Optional| adds a further check to avoid redundant calls to \lstinline|hasNext()|. Any call of shape \lstinline|id.hasNext()| must be followed by an event of different type: either a call to \lstinline|next()| on any object, or a call to \lstinline|hasNext()| to an object different from \lstinline|id|.
 
 
