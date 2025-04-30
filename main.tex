@@ -4,13 +4,13 @@
 % Enter the JOT metadata in the following 
 
 \usepackage{multirow}
-\usepackage{listing}
+%\usepackage{listing}
 \usepackage{cleveref}
 \usepackage{xspace}
 
 \newcommand{\rml}{RML\xspace}
 
-\lstset{language=Java}
+%\lstset{language=Java,morekeywords={not,false,true,none,any,empty,matches,all,let,if,else}}
 
 % Select the article type
 
@@ -29,7 +29,8 @@
 
 \keywords{assertions, runtime verification}
 
-%%\runningtitle{} % For use in the internal pages 
+\lstset{language={Java}, morekeywords={not,false,true,none,any,empty,matches,all,let,if,else}}
+\runningtitle{} % For use in the internal pages 
 
 %% For the footnote.
 %% Give the last name of the first author if only one author;
